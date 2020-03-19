@@ -29,6 +29,11 @@ enum BarcodeFormats {
   UPC_E,
 }
 
+enum Resolution{
+  Auto,
+  Max,
+}
+
 const _defaultBarcodeFormats = const [
   BarcodeFormats.ALL_FORMATS,
 ];
@@ -48,10 +53,11 @@ class QrMobileVision {
     assert(_formats.length > 0);
 
     List<String> formatStrings = _formats.map((format) => format.toString().split('.')[1]).toList(growable: false);
+    String resolution = 'max';
 
     channelReader.setQrCodeHandler(qrCodeHandler);
     var details = await _channel.invokeMethod(
-        'start', {'targetWidth': width, 'targetHeight': height, 'heartbeatTimeout': 0, 'formats': formatStrings});
+        'start', {'targetWidth': width, 'targetHeight': height, 'heartbeatTimeout': 0, 'formats': formatStrings, 'resolution': resolution});
 
     // invokeMethod returns Map<dynamic,...> in dart 2.0
     assert(details is Map<dynamic, dynamic>);
